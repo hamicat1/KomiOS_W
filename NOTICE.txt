@@ -1,0 +1,4 @@
+Komi OS ESP32
+Copyright 2026 Hamicat
+
+This product includes software developed by Hamicat (https://github.com/hamicat1).
