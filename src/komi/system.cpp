@@ -4,7 +4,7 @@
 unsigned long previousMillis = 0; // 记录上次触发时间
 unsigned long currentMillis = millis();
 long interval = 10000;
-char VERSION[]="0001";
+char VERSION[]="0002";
 uint8_t bright=255;
 void k_sys_init(bool minimum){
 

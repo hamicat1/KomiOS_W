@@ -11,5 +11,9 @@
 
 void k_beep_init();
 void k_beep_tone(uint32_t freq, uint32_t duration_ms);
+void k_beep_duty(int duty);
 void k_beep_notice(int num);
+void k_beep_note(uint32_t note,uint32_t duration);
+
+extern int beepDuty;
 #endif

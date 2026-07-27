@@ -31,7 +31,7 @@ void k_desktop_init(){
   char weekBuffer[10]; 
   strncpy(weekBuffer, weekdays[dayIndex], sizeof(weekBuffer) - 1);
   weekBuffer[sizeof(weekBuffer) - 1] = '\0';
-  k_screen_word(weekBuffer,true,0,56,"font3x8");
+  k_screen_word(weekBuffer,true,0,56,"font3x8",0);
   k_screen_display();
 
 }
@@ -59,13 +59,46 @@ int k_sel=1;
 uint8_t k_sel_lim;
 
 uint16_t k_menu_y;
+char barIconName[16][16];
+uint8_t barIcon[16];
+uint8_t barIconCount=0;
+void k_desktop_icon(bool add,bool del,char* name,uint8_t icon){
+  if (add){
+    if(barIconCount<16){
+      for(int i=0;i<barIconCount;i++){
+        if(strcmp(barIconName[i],name)==0)return;
+      }
+      strcpy(barIconName[barIconCount],name);
+      barIcon[barIconCount]=icon;
+      barIconCount++;
+    }
+  }else if(del){
+    for(int i=0;i<barIconCount;i++){
+      if (strcmp(barIconName[i],name)==0){
+        for(int j=i;j<barIconCount-1;j++){
+          strcpy(barIconName[j],barIconName[j+1]);
+          barIcon[j]=barIcon[j+1];
+        }
+        barIconCount--;
+        break;
+      }
+    }
+  }else{
+    uint8_t startX=111;
+    for (int i=0;i<barIconCount;i++){
+      k_icon_show(startX,0,barIcon[i],0,true);
+      startX-=9;
+    }
+  }
+}
 
 void k_desktop_window(char* title){
   k_exit=true;
   struct tm timeinfo = rtc.getTimeStruct();
   strftime(timeBuffer, sizeof(timeBuffer), "%H:%M", &timeinfo);
-  k_screen_word(timeBuffer,true,0,0,"font3x8");
-  k_screen_word(title,true,26,0,"font3x8");
+  k_screen_word(timeBuffer,true,0,0,"font3x8",0);
+  k_screen_word(title,true,26,0,"font3x8",0);
+  k_desktop_icon(false,false,"",0);
   k_screen_line(0,10,128,10,true);
   k_screen_line(22,0,22,10,true);
 }
@@ -74,9 +107,9 @@ void k_desktop_noticeWindow(char* title,char* index,uint8_t icon,bool while_e){
   k_screen_fillRect(64,0,64,64,false);
   k_screen_line(64,10,128,10,true);
   k_screen_line(64,0,64,64,true);
-  k_screen_word(title,true,65,0,"font3x8");
+  k_screen_word(title,true,65,0,"font3x8",0);
   k_icon_show(65,11,icon,0,true);
-  k_screen_word(index,true,65,20,"font3x8");
+  k_screen_word(index,true,65,20,"font3x8",13);
   k_icon_show(120,24,10,0,true);
   k_screen_blurRect(0,0,63,64);
   if (while_e){
@@ -138,9 +171,9 @@ uint16_t k_desktop_numSel(char* title,uint16_t min_lim,uint16_t max_lim,uint16_t
     k_screen_fillRect(0,61,temp_sel*sel_unit,63,true);
     sprintf(strtemp,"%d",(temp_sel+min_lim));
     k_screen_fillRect(0, 12, 12, 20, false);
-    k_screen_word(strtemp,true,0,12,"font3x8");
+    k_screen_word(strtemp,true,0,12,"font3x8",0);
     sprintf(strtemp,"%d",(sel_unit));
-    k_screen_word(strtemp,true,0,30,"font3x8");
+    k_screen_word(strtemp,true,0,30,"font3x8",0);
     k_screen_display();
     if (strcmp(title,"BRIGHT")==0){
       bright=(temp_sel+min_lim);
@@ -169,6 +202,119 @@ uint16_t k_desktop_numSel(char* title,uint16_t min_lim,uint16_t max_lim,uint16_t
 }
 
 
+uint16_t k_desktop_charEdit(char* title,uint16_t max_lim,char* pre_val,bool file){
+  uint8_t cursor=0;
+  int keyCursor=1;
+  int len=strlen(pre_val)+1;
+  char charSet[]="1234567890QWERTYUIOPASDFGHJKLZXCVBNM/_-,. ";
+  if (file){
+    strcpy(charSet, "QWERTYUIOPASDFGHJKLZXCVBNM/_,. ");
+  }
+  int charSetLen=sizeof(charSet)-1;
+  k_exit=true;
+  k_key_notpress();
+  while(k_exit){
+    len=strlen(pre_val)+1;
+    k_screen_clear();
+    k_desktop_window(title);
+    k_screen_fillRect(0, 20, 128, 44, true);
+    int displayLen = len + 1;
+    if (displayLen > max_lim) displayLen = max_lim;
+    for (int i=0;i<len;i++){
+      bool isCursor=(i==cursor);
+      char tempStr[2];
+      if (i < len) {
+        tempStr[0] = pre_val[i];
+      } else {
+        tempStr[0] = ' '; 
+      }
+      tempStr[1] = '\0'; // 确保字符串结束      
+      uint8_t posX = i * 4; // 统一X坐标步长
+      if(isCursor){
+        k_screen_fillRect(i*4,10,4,9,true);
+        k_screen_word(tempStr,false,i*4,11,"font3x8",0);
+      }else{
+        k_screen_word(tempStr,true,i*4,11,"font3x8",0);
+      }
+    }
+    int charBuf=0;
+    int charSetDisp=charSetLen/10+2;
+    for(int j=2;j<charSetDisp;j++){
+      for(int i=0;i<10;i++){
+        char singleCharStr[2];
+        singleCharStr[0] = charSet[charBuf]; // 获取特定字符
+        singleCharStr[1] = '\0'; 
+        k_screen_word(singleCharStr,false,i*6+1,j*10,"font3x8",0);
+        if (charBuf==keyCursor-1){
+          k_screen_invertRect(i*6,j*10-1,5,10);
+        }
+        charBuf++;
+      }
+    }
+    k_screen_word("<-",false,110,30,"font3x8",0);
+    k_screen_word("->",false,110,40,"font3x8",0);
+    k_screen_word("DONE",false,110,50,"font3x8",0);
+    if (keyCursor==charSetLen+1){
+      k_screen_invertRect(109,29,9,10);
+    }
+    if (keyCursor==charSetLen+2){
+      k_screen_invertRect(109,39,9,10);
+    }
+    if (keyCursor==charSetLen+3){
+      k_screen_invertRect(109,49,18,10);
+    }
+    k_screen_display();
+    k_system();
+    if(UP_KEY==0){
+      keyCursor-=1;
+      k_beep_tone(600, 5);
+      if(keyCursor<=0){
+        keyCursor=1;
+      }
+      k_key_notpress();
+    }
+
+    if(DOWN_KEY==0){
+      keyCursor+=1;
+      k_beep_tone(600, 5);
+      if(keyCursor>charSetLen+3){
+        keyCursor=charSetLen+3;
+      }
+      k_key_notpress();
+    }
+    if(SWITCH_KEY==0){
+      cursor+=1;
+      k_beep_tone(1000, 5);
+      k_key_notpress();
+    }
+    if(SEL_KEY==0){
+      if (keyCursor==charSetLen+1){
+        cursor-=1;
+        k_key_notpress();
+        continue;
+      }
+      if (keyCursor==charSetLen+2){
+        cursor+=1;
+        k_key_notpress();
+        continue;
+      }
+      if (keyCursor==charSetLen+3){
+        k_key_notpress();
+        continue;
+      }
+      pre_val[cursor] = charSet[keyCursor-1];
+
+    }
+    k_exit=true;
+    if(BACK_KEY==0){
+      k_exit=false;
+    }
+  }
+  k_key_notpress();
+  return 0;
+}
+
+
 void k_desktop_timeSel(){
   k_exit=true;
   struct tm timeinfo = rtc.getTimeStruct();
@@ -186,19 +332,19 @@ void k_desktop_timeSel(){
     k_screen_line(10,13,10,20,false);
 
     sprintf(strtemp,"%d",temp_sel_hour);
-    k_screen_word(strtemp,false,1,13,"font3x8");
+    k_screen_word(strtemp,false,1,13,"font3x8",0);
     sprintf(strtemp,"%d",temp_sel_min);
-    k_screen_word(strtemp,false,12,13,"font3x8");
+    k_screen_word(strtemp,false,12,13,"font3x8",0);
     
     k_screen_fillRect(0, 24, 37, 10, true);
     k_screen_line(17,25,17,32,false);
     k_screen_line(27,25,27,32,false);
     sprintf(strtemp,"%d",temp_sel_year);
-    k_screen_word(strtemp,false,1,25,"font3x8");
+    k_screen_word(strtemp,false,1,25,"font3x8",0);
     sprintf(strtemp,"%d",temp_sel_month);
-    k_screen_word(strtemp,false,19,25,"font3x8");
+    k_screen_word(strtemp,false,19,25,"font3x8",0);
     sprintf(strtemp,"%d",temp_sel_day);
-    k_screen_word(strtemp,false,29,25,"font3x8");
+    k_screen_word(strtemp,false,29,25,"font3x8",0);
     if (temp_sel==0){
       k_screen_invertRect(0,12,9,10);
     }
@@ -299,8 +445,8 @@ void k_desktop_timeSel(){
 void k_desktop_notice(char* title,char* index){
   k_saveScreen();
   k_screen_fillRect(0, 0, 128, 30, true);
-  k_screen_word(title,false,0,0,"font3x8");
-  k_screen_word(index,false,0,15,"font3x8");
+  k_screen_word(title,false,0,0,"font3x8",0);
+  k_screen_word(index,false,0,15,"font3x8",0);
   k_screen_line(0,28,128,28,false);
   k_screen_display();
   k_beep_notice(1);
@@ -338,7 +484,7 @@ void k_menuthing_calendar(){
   struct tm timeinfo = rtc.getTimeStruct();
   k_screen_fillRect(2, 12, 36, 36, false);
   strftime(timeBuffer, sizeof(timeBuffer), "%m", &timeinfo);
-  k_screen_word(timeBuffer,true,4,14,"font3x8");
+  k_screen_word(timeBuffer,true,4,14,"font3x8",0);
   strftime(timeBuffer, sizeof(timeBuffer), "%d", &timeinfo);
   k_screen_text(timeBuffer,true,4,22,"font3x8",3);
 }
@@ -353,9 +499,9 @@ void k_desktop_menu(){
     struct tm timeinfo = rtc.getTimeStruct();
     strftime(timeBuffer, sizeof(timeBuffer), "%H:%M", &timeinfo);
     k_screen_clear();
-    k_screen_word(timeBuffer,true,0,0,"font3x8");
+    k_screen_word(timeBuffer,true,0,0,"font3x8",0);
     sprintf(buffer,"%d",k_sel);
-    k_screen_word(buffer,true,124,10,"font3x8");
+    k_screen_word(buffer,true,124,10,"font3x8",0);
     k_system();
     k_desktop_menusel(4);
     k_screen_fillRect(0, 10, 40, 64, true);

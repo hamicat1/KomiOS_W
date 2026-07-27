@@ -171,7 +171,24 @@ static const unsigned char PROGMEM icon_file[] =
   0b10000001,
   0b10000001,
   0b11111111 };
-
+static const unsigned char PROGMEM icon_loading[] =
+{ 0b01001001,
+  0b10010010,
+  0b00100100,
+  0b01001001,
+  0b10010010,
+  0b00100100,
+  0b01001001,
+  0b10010010 };
+static const unsigned char PROGMEM icon_new[] =
+{ 0b00011000,
+  0b00011000,
+  0b00011000,
+  0b11111111,
+  0b11111111,
+  0b00011000,
+  0b00011000,
+  0b00011000 };
 
 const Icon_t icons[] = {
   {icon_folder, 8, 8},//0
@@ -193,6 +210,8 @@ const Icon_t icons[] = {
   {icon_rename, 8, 8},
   {icon_delete, 8, 8},
   {icon_file, 8, 8},
+  {icon_loading, 8, 8},
+  {icon_new, 8, 8},//20
 };
 
 

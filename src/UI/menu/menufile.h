@@ -2,6 +2,7 @@
 #define MENUFILE_H
 
 #include "../../../komiapi.h"
+#include "../../app/komiapp.h"
 #include "FS.h"
 #include "FFat.h"
 #include <string.h>

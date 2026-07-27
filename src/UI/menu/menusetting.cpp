@@ -1,6 +1,7 @@
 #include "menusetting.h"
 char* menu_items[] = {
     "SCREEN",
+    "SPEAKER",
     "TIME/DATE",
     "SYSTEM INFO",
     "REBOOT"
@@ -8,11 +9,12 @@ char* menu_items[] = {
 
 const uint8_t menu_icons[] = {
     4,
+    3,
     5,
     6,
     7
 };
-const int item_count = 4;
+const int item_count = 5;
 
 char* scr_menu_items[] = {
     "BRIGHT",
@@ -36,7 +38,7 @@ void k_setting_screen(){
     k_desktop_window("SCREEN");
     k_menu_y=12;
     for (int i = 0; i < scr_item_count; i++) {
-      k_screen_word(scr_menu_items[i],true,10,k_menu_y,"font3x8");
+      k_screen_word(scr_menu_items[i],true,10,k_menu_y,"font3x8",0);
       k_icon_show(0,k_menu_y,scr_menu_icons[i],0,true);
       k_menu_y+=10;
     }
@@ -73,6 +75,67 @@ void k_setting_screen(){
   k_key_notpress();
 }
 
+
+char* snd_menu_items[] = {
+    "Duty",
+    "Mode",
+    "INIT",
+};
+const uint8_t snd_menu_icons[] = {
+    3,
+    3,
+    3
+};
+const int snd_item_count = 3;
+
+void k_setting_sound(){
+  char buffer[32];
+  k_sel=1;
+  k_exit=true;
+  k_key_notpress();
+  while(k_exit){
+    k_screen_clear();
+    k_desktop_window("SPEAKER");
+    k_menu_y=12;
+    for (int i = 0; i < scr_item_count; i++) {
+      k_screen_word(snd_menu_items[i],true,10,k_menu_y,"font3x8",0);
+      k_icon_show(0,k_menu_y,snd_menu_icons[i],0,true);
+      k_menu_y+=10;
+    }
+    k_system();
+    k_desktop_menusel(scr_item_count);
+    k_screen_invertRect(0,k_sel*10+1,128,9);
+    k_screen_display();
+    if(k_sel==1){
+      if(SEL_KEY==0){
+        k_key_notpress();
+        beepDuty=k_desktop_numSel("DUTY",1984,2112,beepDuty);
+        k_desktop_noticeWindow("DONE","SET DONE",6,true);
+        k_key_notpress();
+      }
+    }
+    if(k_sel==2){
+      if(SEL_KEY==0){
+        
+      }
+    }
+    if(k_sel==3){
+      if(SEL_KEY==0){
+        k_screen_init();
+      }
+    }
+
+    k_screen_invertRect(0,k_sel*10+1,128,9);
+    k_exit=true;
+    if(BACK_KEY==0){
+      k_exit=false;
+    }
+
+  }
+  k_key_notpress();
+}
+
+
 char* time_menu_items[] = {
     "MANUAL ADJUST",
     "TIME ZONE",
@@ -93,7 +156,7 @@ void k_setting_time(){
     k_desktop_window("TIME/DATE");
     k_menu_y=12;
     for (int i = 0; i < time_item_count; i++) {
-      k_screen_word(time_menu_items[i],true,10,k_menu_y,"font3x8");
+      k_screen_word(time_menu_items[i],true,10,k_menu_y,"font3x8",0);
       k_icon_show(0,k_menu_y,time_menu_icons[i],0,true);
       k_menu_y+=10;
     }
@@ -140,7 +203,7 @@ void k_menu_setting(){
     k_desktop_window("SETTINGS");
     k_menu_y=12;
     for (int i = 0; i < item_count; i++) {
-      k_screen_word(menu_items[i],true,10,k_menu_y,"font3x8");
+      k_screen_word(menu_items[i],true,10,k_menu_y,"font3x8",0);
       k_icon_show(0,k_menu_y,menu_icons[i],0,true);
       k_menu_y+=10;
     }
@@ -156,18 +219,24 @@ void k_menu_setting(){
     }
     if(k_sel==2){
       if(SEL_KEY==0){
-        k_setting_time();
+        k_setting_sound();
         k_key_notpress();
       }
     }
     if(k_sel==3){
+      if(SEL_KEY==0){
+        k_setting_time();
+        k_key_notpress();
+      }
+    }
+    if(k_sel==4){
       if(SEL_KEY==0){
         sprintf(buffer, "HEAP: %d KB", ESP.getFreeHeap() / 1024);
         k_desktop_notice(VERSION,buffer);
         k_key_notpress();
       }
     }
-    if(k_sel==4){
+    if(k_sel==5){
       if(SEL_KEY==0){
         ESP.restart();
       }

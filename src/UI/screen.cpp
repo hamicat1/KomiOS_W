@@ -26,7 +26,7 @@ void k_screen_bmp(uint8_t x,uint8_t y,const unsigned char bitmap[],uint8_t w,uin
 }
 
 //font:font3x8,Defaut
-void k_screen_word(char *str,bool white,uint8_t posx,uint8_t posy,char font[]){
+void k_screen_word(char *str,bool white,uint8_t posx,uint8_t posy,char font[],int charLim){
   
   const char *wordstr=k_word_base(str,0);
   uint16_t str_len=strlen(wordstr);
@@ -36,11 +36,31 @@ void k_screen_word(char *str,bool white,uint8_t posx,uint8_t posy,char font[]){
   if (strcmp(font,"font3x8")==0){
     xskip=4;
   }
+  uint8_t maxCharsPerLine = (128 - posx) / xskip;
+  if (charLim > 0 && charLim < maxCharsPerLine) {
+    maxCharsPerLine = charLim;
+  }
+  uint8_t currentX = posx;
+  uint8_t currentY = posy;
+  uint8_t charsOnLine = 0;
   for(int i=0;i<str_len;i++){
     k_word_temp=wordstr[i];
-      word_code=k_word_temp-32;
-    k_icon_show(posx,posy,word_code,1,white);
-    posx+=xskip;
+    if (k_word_temp == '\n') {
+      currentX = posx;
+      currentY += 8; // 字体高度
+      charsOnLine = 0;
+      continue;
+    }
+    if (charsOnLine >= maxCharsPerLine) {
+      currentX = posx;
+      currentY += 8;
+      charsOnLine = 0;     
+      if (currentY > 64) break; 
+    }
+    word_code=k_word_temp-32;
+    k_icon_show(currentX,currentY,word_code,1,white);
+    currentX += xskip;
+    charsOnLine++;
   }
 }
 
