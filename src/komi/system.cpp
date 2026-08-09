@@ -4,8 +4,10 @@
 unsigned long previousMillis = 0; // 记录上次触发时间
 unsigned long currentMillis = millis();
 long interval = 10000;
-char VERSION[]="0002";
+char VERSION[]="0003";
+char FONT[]="font8x8";
 uint8_t bright=255;
+
 void k_sys_init(bool minimum){
 
   k_key_init();
@@ -29,6 +31,7 @@ void k_sys_init(bool minimum){
   k_file_init();
   k_desktop_init();
 
+
   //k_wifi_init();
   //k_time_init();
   k_sleep_init();
@@ -42,7 +45,7 @@ void k_sys_sleep_res(){
 void k_system(void){
   currentMillis = millis();
   if(DISP_KEY==0||(currentMillis - previousMillis >= interval)){
-    delay(250);
+    delay(500);
     if(DISP_KEY==0){
       k_desktop_notice("DEEPSLEEP","NOW YOU ARE IN DEEP SLEEP");
       k_key_notpress();
@@ -71,7 +74,7 @@ void k_system(void){
     previousMillis=currentMillis;
   }
   k_screen_dim(bright);
-  
+  k_clock_alarm(false);
 
 
 }

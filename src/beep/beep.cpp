@@ -26,6 +26,12 @@ void k_beep_tone(uint32_t freq, uint32_t duration_ms) {
       ledcWriteTone(BEEP_CHANNEL_0, 0); // 停止发声
     }
 }
+
+void k_beep_stop(uint32_t duration_ms) {
+  ledcWriteTone(BEEP_CHANNEL_0, 0); // 停止发声
+  delay(duration_ms);
+}
+
 void k_beep_notice(int num) {
   if (num==1){
     k_beep_tone(440,100);
@@ -38,6 +44,116 @@ void k_beep_notice(int num) {
 }
 
 void k_beep_note(uint32_t noteNum,uint32_t duration){
-  if(noteNum<33||noteNum>96) return;
+  if(noteNum<33||noteNum>96) {
+    k_beep_stop(duration);
+    return;
+    }
   k_beep_tone(noteFreq[noteNum-33],duration);
 }
+
+void k_beep_music(int num) {
+  if (num==1){
+    for(int i=0;i<3;i++){
+      k_beep_note(72,400);
+      k_beep_note(76,400);
+      k_beep_note(81,400);
+      k_beep_note(76,400);
+      k_beep_note(69,400);
+      k_beep_note(76,400);
+
+      k_beep_note(71,400);
+      k_beep_note(76,400);
+      k_beep_note(81,400);
+      k_beep_note(76,400);
+      k_beep_note(69,400);
+      k_beep_note(76,400);
+    }
+    k_beep_note(72,400);
+    k_beep_note(76,400);
+    k_beep_note(81,400);
+    k_beep_note(76,400);
+    k_beep_note(72,400);
+    k_beep_note(76,400);
+
+    k_beep_note(74,400);
+    k_beep_note(76,400);
+    k_beep_note(81,400);
+    k_beep_note(76,400);
+    k_beep_note(74,400);
+    k_beep_note(76,400);
+  
+    k_beep_note(72,400);
+    k_beep_note(76,400);
+    k_beep_note(81,400);
+    k_beep_note(76,400);
+    k_beep_note(72,800);
+
+    k_beep_note(74,800);
+    k_beep_note(76,400);
+    k_beep_note(81,400);
+    k_beep_note(76,800);
+
+
+    k_beep_note(76,400);
+    k_beep_note(77,400);
+    k_beep_note(84,400);
+    k_beep_note(77,400);
+    k_beep_note(76,400);
+    k_beep_note(77,400);
+
+    k_beep_note(76,400);
+    k_beep_note(77,400);
+    k_beep_note(83,400);
+    k_beep_note(77,400);
+    k_beep_note(76,400);
+    k_beep_note(77,400);
+
+    k_beep_note(74,400);
+    k_beep_note(76,400);
+    k_beep_note(81,400);
+    k_beep_note(77,400);
+    k_beep_note(76,400);
+    k_beep_note(77,400);
+
+    k_beep_note(72,400);
+    k_beep_note(76,400);
+    k_beep_note(81,400);
+    k_beep_note(77,400);
+    k_beep_note(76,400);
+    k_beep_note(77,400);
+
+    k_beep_note(71,400);
+    k_beep_note(77,400);
+    k_beep_note(79,400);
+    k_beep_note(77,400);
+    k_beep_note(71,400);
+    k_beep_note(77,400);
+
+    k_beep_note(69,400);
+    k_beep_note(76,400);
+    k_beep_note(77,400);
+    k_beep_note(76,400);
+    k_beep_note(69,400);
+    k_beep_note(76,400);
+
+    k_beep_note(69,400);
+    k_beep_note(74,400);
+    k_beep_note(76,400);
+    k_beep_note(74,400);
+    k_beep_note(69,400);
+    k_beep_note(74,400);
+
+    k_beep_note(69,400);
+    k_beep_note(72,400);
+    k_beep_note(76,400);
+    k_beep_note(72,400);
+    k_beep_note(69,400);
+    k_beep_note(72,400);
+  }
+     
+  if (num==2){
+    k_beep_tone(440,100);
+    k_beep_tone(466,100);
+  }
+}
+

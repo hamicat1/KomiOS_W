@@ -3,6 +3,8 @@
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT,
 OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
+
+
 uint8_t screenSnapshot[1024];
 
 void k_saveScreen() {

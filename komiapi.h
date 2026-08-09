@@ -22,7 +22,9 @@
 #include "src/UI/menu/menusetting.h"
 #include "src/UI/menu/menufile.h"
 #include "src/UI/menu/menuclock.h"
+#include "src/UI/menu/menuwire.h"
 extern int k_sel;
-
+extern int K_SCREEN_WIDTH;
+extern int K_SCREEN_HEIGHT;
 
 #endif

@@ -8,6 +8,7 @@ extern uint16_t k_menu_sel;
 
 void k_desktop_init();
 void k_desktop_letter();
+void k_desktop_keyIcon(uint8_t icon,uint8_t icon2,uint8_t icon3);
 void k_desktop_icon(bool add,bool del,char* name,uint8_t icon);
 void k_desktop_menusel(uint32_t k_sel_lim);
 void k_desktop_menu();

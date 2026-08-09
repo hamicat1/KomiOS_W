@@ -1,5 +1,7 @@
 #include "icon.h"
 
+
+
 static const unsigned char PROGMEM icon_folder[] =
 { 0b11100000,
   0b10111100,
@@ -189,6 +191,114 @@ static const unsigned char PROGMEM icon_new[] =
   0b00011000,
   0b00011000,
   0b00011000 };
+static const unsigned char PROGMEM icon_upper[] =
+{ 0b00011000,
+  0b00111100,
+  0b01111110,
+  0b11111111,
+  0b00011000,
+  0b00011000,
+  0b00011000,
+  0b00011000 };
+static const unsigned char PROGMEM icon_smbl[] =
+{ 0b01000010,
+  0b10100011,
+  0b00100110,
+  0b01010010,
+  0b00010011,
+  0b01010110,
+  0b00000010,
+  0b00010000 };
+static const unsigned char PROGMEM icon_up[] =
+{ 0b00000000,
+  0b00000000,
+  0b00011000,
+  0b00111100,
+  0b01111110,
+  0b11111111,
+  0b00000000,
+  0b00000000 };
+static const unsigned char PROGMEM icon_down[] =
+{ 0b00000000,
+  0b00000000,
+  0b11111111,
+  0b01111110,
+  0b00111100,
+  0b00011000,
+  0b00000000,
+  0b00000000 };
+static const unsigned char PROGMEM icon_left[] =
+{ 0b00000100,
+  0b00001100,
+  0b00011100,
+  0b00111100,
+  0b00111100,
+  0b00011100,
+  0b00001100,
+  0b00000100 };
+static const unsigned char PROGMEM icon_right[] =
+{ 0b00100000,
+  0b00110000,
+  0b00111000,
+  0b00111100,
+  0b00111100,
+  0b00111000,
+  0b00110000,
+  0b00100000 };
+static const unsigned char PROGMEM icon_dot[] =
+{ 0b00000000,
+  0b00000000,
+  0b00000000,
+  0b00011000,
+  0b00011000,
+  0b00000000,
+  0b00000000,
+  0b00000000 };
+static const unsigned char PROGMEM icon_lock[] =
+{ 0b00011000,
+  0b00100100,
+  0b00100100,
+  0b11111111,
+  0b10000001,
+  0b10011001,
+  0b10000001,
+  0b11111111 };
+static const unsigned char PROGMEM icon_Alower[] =
+{ 0b00000000,
+  0b00000000,
+  0b00000000,
+  0b00000000,
+  0b01100000,
+  0b10010000,
+  0b10010000,
+  0b01110000 };
+static const unsigned char PROGMEM icon_Aupper[] =
+{ 0b01100000,
+  0b01100000,
+  0b10010000,
+  0b10010010,
+  0b10010101,
+  0b11110111,
+  0b10010111,
+  0b10010111 };
+static const unsigned char PROGMEM icon_wire[] =
+{ 0b00111100,
+  0b01100111,
+  0b10111100,
+  0b10001110,
+  0b01110001,
+  0b00111101,
+  0b11100110,
+  0b00111100 };
+static const unsigned char PROGMEM icon_language[] =
+{ 0b00000100,
+  0b00011111,
+  0b00010001,
+  0b01001010,
+  0b10100100,
+  0b10111011,
+  0b11100000,
+  0b10100000 };
 
 const Icon_t icons[] = {
   {icon_folder, 8, 8},//0
@@ -212,6 +322,18 @@ const Icon_t icons[] = {
   {icon_file, 8, 8},
   {icon_loading, 8, 8},
   {icon_new, 8, 8},//20
+  {icon_upper, 8, 8},
+  {icon_smbl, 8, 8},
+  {icon_up, 8, 8},
+  {icon_down, 8, 8},
+  {icon_left, 8, 8},
+  {icon_right, 8, 8},
+  {icon_dot, 8, 8},
+  {icon_lock, 8, 8},
+  {icon_Alower, 8, 8},
+  {icon_Aupper, 8, 8},//30
+  {icon_wire, 8, 8},
+  {icon_language, 8, 8},
 };
 
 
@@ -305,960 +427,7 @@ const Battery_t battery[] = {
 
 
 
-static const unsigned char PROGMEM font3x8_SPACE[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_INNTER[]={
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b00000000,
-  0b00000000,
-  0b01000000 };
-static const unsigned char PROGMEM font3x8_VERTICAL[]={
-  0b10100000,
-  0b10100000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_JING[]={
-  0b10100000,
-  0b10100000,
-  0b11100000,
-  0b10100000,
-  0b10100000,
-  0b11100000,
-  0b10100000,
-  0b10100000 };
-static const unsigned char PROGMEM font3x8_DOLLAR[]={
-  0b01000000,
-  0b01100000,
-  0b11000000,
-  0b11000000,
-  0b01100000,
-  0b01100000,
-  0b11000000,
-  0b01000000 };
-static const unsigned char PROGMEM font3x8_PERCENT[]={
-  0b00000000,
-  0b10100000,
-  0b00100000,
-  0b00100000,
-  0b01000000,
-  0b10000000,
-  0b10100000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_AND[]={
-  0b00000000,
-  0b01000000,
-  0b10100000,
-  0b01000000,
-  0b10100000,
-  0b10100000,
-  0b11000000,
-  0b10100000 };
-static const unsigned char PROGMEM font3x8_SPL[]={
-  0b00100000,
-  0b00100000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_LEFTCURV[]={
-  0b00100000,
-  0b01000000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b01000000,
-  0b00100000 };
-static const unsigned char PROGMEM font3x8_RIGHTCURV[]={
-  0b10000000,
-  0b01000000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b01000000,
-  0b10000000 };
-static const unsigned char PROGMEM font3x8_STAR[]={
-  0b00000000,
-  0b01000000,
-  0b01000000,
-  0b11100000,
-  0b01000000,
-  0b10100000,
-  0b00000000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_PLUS[]={
-  0b00000000,
-  0b00000000,
-  0b01000000,
-  0b11100000,
-  0b01000000,
-  0b00000000,
-  0b00000000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_COMMA[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00100000,
-  0b01000000 };
-static const unsigned char PROGMEM font3x8_MINUS[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b11100000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_DOT[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00100000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_SPLASH[]={
-  0b00000000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b01000000,
-  0b10000000,
-  0b10000000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_0[]={
-  0b01000000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b11100000,
-  0b10100000,
-  0b10100000,
-  0b01000000 };
-static const unsigned char PROGMEM font3x8_1[]={
-  0b01000000,
-  0b11000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b11100000 };
-static const unsigned char PROGMEM font3x8_2[]={
-  0b01000000,
-  0b10100000,
-  0b00100000,
-  0b01000000,
-  0b01000000,
-  0b10000000,
-  0b10000000,
-  0b11100000 };
-static const unsigned char PROGMEM font3x8_3[]={
-  0b11000000,
-  0b00100000,
-  0b00100000,
-  0b11000000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b11000000 };
-static const unsigned char PROGMEM font3x8_4[]={
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b11100000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b00100000 };
-static const unsigned char PROGMEM font3x8_5[]={
-  0b11100000,
-  0b10000000,
-  0b10000000,
-  0b01100000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b11000000 };
-static const unsigned char PROGMEM font3x8_6[]={
-  0b01100000,
-  0b10000000,
-  0b10000000,
-  0b11000000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b01000000 };
-static const unsigned char PROGMEM font3x8_7[]={
-  0b11100000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b01000000,
-  0b01000000,
-  0b10000000,
-  0b10000000 };
-static const unsigned char PROGMEM font3x8_8[]={
-  0b01000000,
-  0b10100000,
-  0b10100000,
-  0b01000000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b01000000 };
-static const unsigned char PROGMEM font3x8_9[]={
-  0b01000000,
-  0b10100000,
-  0b10100000,
-  0b01100000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b11000000 };
-static const unsigned char PROGMEM font3x8_TWODOT[]={
-  0b00000000,
-  0b00000000,
-  0b01000000,
-  0b00000000,
-  0b00000000,
-  0b01000000,
-  0b00000000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_SPLITDOT[]={
-  0b00000000,
-  0b00000000,
-  0b01000000,
-  0b00000000,
-  0b00000000,
-  0b01000000,
-  0b10000000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_SMALL[]={
-  0b00000000,
-  0b00100000,
-  0b01000000,
-  0b10000000,
-  0b01000000,
-  0b00100000,
-  0b00000000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_EQUAL[]={
-  0b00000000,
-  0b00000000,
-  0b11100000,
-  0b00000000,
-  0b11100000,
-  0b00000000,
-  0b00000000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_BIG[]={
-  0b00000000,
-  0b10000000,
-  0b01000000,
-  0b00100000,
-  0b01000000,
-  0b10000000,
-  0b00000000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_QUESTION[]={
-  0b01000000,
-  0b10100000,
-  0b00100000,
-  0b01000000,
-  0b01000000,
-  0b00000000,
-  0b00000000,
-  0b01000000 };
-static const unsigned char PROGMEM font3x8_AT[]={
-  0b00000000,
-  0b01000000,
-  0b10100000,
-  0b11100000,
-  0b10100000,
-  0b01100000,
-  0b00000000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_A[]={
-  0b01000000,
-  0b01000000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b11100000,
-  0b10100000,
-  0b10100000 };
-static const unsigned char PROGMEM font3x8_B[]={
-  0b11000000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b11000000,
-  0b10100000,
-  0b10100000,
-  0b11100000 };
-static const unsigned char PROGMEM font3x8_C[]={
-  0b01100000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b01100000 };
-static const unsigned char PROGMEM font3x8_D[]={
-  0b11000000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b11000000 };
-static const unsigned char PROGMEM font3x8_E[]={
-  0b11100000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b11100000,
-  0b10000000,
-  0b10000000,
-  0b11100000 };
-static const unsigned char PROGMEM font3x8_F[]={
-  0b11100000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b11100000,
-  0b10000000,
-  0b10000000,
-  0b10000000 };
-static const unsigned char PROGMEM font3x8_G[]={
-  0b01100000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b11000000 };
-static const unsigned char PROGMEM font3x8_H[]={
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b11100000,
-  0b10100000,
-  0b10100000,
-  0b10100000 };
-static const unsigned char PROGMEM font3x8_I[]={
-  0b11100000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b11100000 };
-static const unsigned char PROGMEM font3x8_J[]={
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b11000000 };
-static const unsigned char PROGMEM font3x8_K[]={
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b11000000,
-  0b11000000,
-  0b10100000,
-  0b10100000,
-  0b10100000 };
-static const unsigned char PROGMEM font3x8_L[]={
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b11100000 };
-static const unsigned char PROGMEM font3x8_M[]={
-  0b10100000,
-  0b11100000,
-  0b11100000,
-  0b11100000,
-  0b11100000,
-  0b10100000,
-  0b10100000,
-  0b10100000 };
-static const unsigned char PROGMEM font3x8_N[]={
-  0b10100000,
-  0b10100000,
-  0b11100000,
-  0b11100000,
-  0b11100000,
-  0b11100000,
-  0b10100000,
-  0b10100000 };
-static const unsigned char PROGMEM font3x8_O[]={
-  0b01000000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b01000000 };
-static const unsigned char PROGMEM font3x8_P[]={
-  0b11000000,
-  0b10100000,
-  0b10100000,
-  0b11100000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b10000000 };
-static const unsigned char PROGMEM font3x8_Q[]={
-  0b01000000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b01100000,
-  0b00100000 };
-static const unsigned char PROGMEM font3x8_R[]={
-  0b11000000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b11000000,
-  0b10100000,
-  0b10100000 };
-static const unsigned char PROGMEM font3x8_S[]={
-  0b01100000,
-  0b10000000,
-  0b10000000,
-  0b01000000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b11000000 };
-static const unsigned char PROGMEM font3x8_T[]={
-  0b11100000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000 };
-static const unsigned char PROGMEM font3x8_U[]={
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b11100000 };
-static const unsigned char PROGMEM font3x8_V[]={
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b11100000,
-  0b01000000 };
-static const unsigned char PROGMEM font3x8_W[]={
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b11100000,
-  0b11100000,
-  0b11100000,
-  0b10100000 };
-static const unsigned char PROGMEM font3x8_X[]={
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b01000000,
-  0b10100000,
-  0b10100000,
-  0b10100000 };
-static const unsigned char PROGMEM font3x8_Y[]={
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b01000000,
-  0b01000000,
-  0b01000000 };
-static const unsigned char PROGMEM font3x8_Z[]={
-  0b11100000,
-  0b00100000,
-  0b00100000,
-  0b01000000,
-  0b01000000,
-  0b10000000,
-  0b10000000,
-  0b11100000 };
-static const unsigned char PROGMEM font3x8_LEFTSQCURV[]={
-  0b11100000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b11100000 };
-static const unsigned char PROGMEM font3x8_BACKSPLASH[]={
-  0b00000000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b01000000,
-  0b00100000,
-  0b00100000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_RIGHTSQCURV[]={
-  0b11100000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b00100000,
-  0b11100000 };
-static const unsigned char PROGMEM font3x8_POWER[]={
-  0b01000000,
-  0b10100000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_DOWNSLASH[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b11100000 };
-static const unsigned char PROGMEM font3x8_UPPERCOMMA[]={
-  0b10000000,
-  0b01000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_a[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b01000000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b01100000 };
-static const unsigned char PROGMEM font3x8_b[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b10000000,
-  0b10000000,
-  0b11000000,
-  0b10100000,
-  0b11000000 };
-static const unsigned char PROGMEM font3x8_c[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b01100000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b01100000 };
-static const unsigned char PROGMEM font3x8_d[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b00100000,
-  0b00100000,
-  0b01100000,
-  0b10100000,
-  0b01100000 };
-static const unsigned char PROGMEM font3x8_e[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b01000000,
-  0b10100000,
-  0b11100000,
-  0b10000000,
-  0b01100000 };
-static const unsigned char PROGMEM font3x8_f[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b01100000,
-  0b01000000,
-  0b11100000,
-  0b01000000,
-  0b01000000 };
-static const unsigned char PROGMEM font3x8_g[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b01000000,
-  0b10100000,
-  0b01100000,
-  0b00100000,
-  0b11000000 };
-static const unsigned char PROGMEM font3x8_h[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b10000000,
-  0b10000000,
-  0b11000000,
-  0b10100000,
-  0b10100000 };
-static const unsigned char PROGMEM font3x8_i[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b01000000,
-  0b00000000,
-  0b01000000,
-  0b01000000,
-  0b01000000 };
-static const unsigned char PROGMEM font3x8_j[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b01000000,
-  0b00000000,
-  0b11000000,
-  0b01000000,
-  0b10000000 };
-static const unsigned char PROGMEM font3x8_k[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b10000000,
-  0b10000000,
-  0b10100000,
-  0b11000000,
-  0b10100000 };
-static const unsigned char PROGMEM font3x8_l[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b00100000 };
-static const unsigned char PROGMEM font3x8_m[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b10100000,
-  0b11100000,
-  0b11100000,
-  0b11100000,
-  0b11100000 };
-static const unsigned char PROGMEM font3x8_n[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b11000000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000 };
-static const unsigned char PROGMEM font3x8_o[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b01000000,
-  0b10100000,
-  0b10100000,
-  0b01000000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_p[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b11000000,
-  0b10100000,
-  0b11000000,
-  0b10000000,
-  0b10000000 };
-static const unsigned char PROGMEM font3x8_q[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b01100000,
-  0b10100000,
-  0b01100000,
-  0b00100000,
-  0b00100000 };
-static const unsigned char PROGMEM font3x8_r[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b01100000,
-  0b10000000,
-  0b10000000,
-  0b10000000,
-  0b10000000 };
-static const unsigned char PROGMEM font3x8_s[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b01100000,
-  0b10000000,
-  0b01000000,
-  0b00100000,
-  0b11000000 };
-static const unsigned char PROGMEM font3x8_ct[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b01000000,
-  0b11100000,
-  0b01000000,
-  0b01000000,
-  0b00100000 };
-static const unsigned char PROGMEM font3x8_u[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b01100000 };
-static const unsigned char PROGMEM font3x8_v[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b10100000,
-  0b01000000 };
-static const unsigned char PROGMEM font3x8_w[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b10100000,
-  0b11100000,
-  0b11100000,
-  0b11100000,
-  0b10100000 };
-static const unsigned char PROGMEM font3x8_x[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b10100000,
-  0b01000000,
-  0b01000000,
-  0b10100000,
-  0b00000000 };
-static const unsigned char PROGMEM font3x8_y[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b10100000,
-  0b10100000,
-  0b01100000,
-  0b00100000,
-  0b11000000 };
-static const unsigned char PROGMEM font3x8_z[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b11100000,
-  0b00100000,
-  0b01000000,
-  0b10000000,
-  0b11100000 };
-static const unsigned char PROGMEM font3x8_LEFTBIGCURV[]={
-  0b00100000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b11000000,
-  0b01000000,
-  0b01000000,
-  0b00100000 };
-static const unsigned char PROGMEM font3x8_HTZLSPLASH[]={
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01000000 };
-static const unsigned char PROGMEM font3x8_RIGHTBIGCURV[]={
-  0b10000000,
-  0b01000000,
-  0b01000000,
-  0b01000000,
-  0b01100000,
-  0b01000000,
-  0b01000000,
-  0b10000000 };
-static const unsigned char PROGMEM font3x8_TO[]={
-  0b00000000,
-  0b00000000,
-  0b00000000,
-  0b01000000,
-  0b10100000,
-  0b00000000,
-  0b00000000,
-  0b00000000 };
 
-const fonts3x8_t fonts3x8[] = {
-  {font3x8_SPACE, 3, 8},
-  {font3x8_INNTER, 3, 8},
-  {font3x8_VERTICAL, 3, 8},
-  {font3x8_JING, 3, 8},
-  {font3x8_DOLLAR, 3, 8},
-  {font3x8_PERCENT, 3, 8},
-  {font3x8_AND, 3, 8},
-  {font3x8_SPL, 3, 8},
-  {font3x8_LEFTCURV, 3, 8},
-  {font3x8_RIGHTCURV, 3, 8},
-  {font3x8_STAR, 3, 8},
-  {font3x8_PLUS, 3, 8},
-  {font3x8_COMMA, 3, 8},
-  {font3x8_MINUS, 3, 8},
-  {font3x8_DOT, 3, 8},
-  {font3x8_SPLASH, 3, 8},
-  {font3x8_0, 3, 8},
-  {font3x8_1, 3, 8},
-  {font3x8_2, 3, 8},
-  {font3x8_3, 3, 8},
-  {font3x8_4, 3, 8},
-  {font3x8_5, 3, 8},
-  {font3x8_6, 3, 8},
-  {font3x8_7, 3, 8},
-  {font3x8_8, 3, 8},
-  {font3x8_9, 3, 8},
-  {font3x8_TWODOT, 3, 8},
-  {font3x8_SPLITDOT, 3, 8},
-  {font3x8_SMALL, 3, 8},
-  {font3x8_EQUAL, 3, 8},
-  {font3x8_BIG, 3, 8},
-  {font3x8_QUESTION, 3, 8},
-  {font3x8_AT, 3, 8},
-  {font3x8_A, 3, 8},
-  {font3x8_B, 3, 8},
-  {font3x8_C, 3, 8},
-  {font3x8_D, 3, 8},
-  {font3x8_E, 3, 8},
-  {font3x8_F, 3, 8},
-  {font3x8_G, 3, 8},
-  {font3x8_H, 3, 8},
-  {font3x8_I, 3, 8},
-  {font3x8_J, 3, 8},
-  {font3x8_K, 3, 8},
-  {font3x8_L, 3, 8},
-  {font3x8_M, 3, 8},
-  {font3x8_N, 3, 8},
-  {font3x8_O, 3, 8},
-  {font3x8_P, 3, 8},
-  {font3x8_Q, 3, 8},
-  {font3x8_R, 3, 8},
-  {font3x8_S, 3, 8},
-  {font3x8_T, 3, 8},
-  {font3x8_U, 3, 8},
-  {font3x8_V, 3, 8},
-  {font3x8_W, 3, 8},
-  {font3x8_X, 3, 8},
-  {font3x8_Y, 3, 8},
-  {font3x8_Z, 3, 8},
-  {font3x8_LEFTSQCURV,3,8},
-  {font3x8_BACKSPLASH,3,8},
-  {font3x8_RIGHTSQCURV,3,8},
-  {font3x8_POWER,3,8},
-  {font3x8_DOWNSLASH,3,8},
-  {font3x8_UPPERCOMMA,3,8},
-  {font3x8_a,3,8},
-  {font3x8_b,3,8},
-  {font3x8_c,3,8},
-  {font3x8_d,3,8},
-  {font3x8_e,3,8},
-  {font3x8_f,3,8},
-  {font3x8_g,3,8},
-  {font3x8_h,3,8},
-  {font3x8_i,3,8},
-  {font3x8_j,3,8},
-  {font3x8_k,3,8},
-  {font3x8_l,3,8},
-  {font3x8_m,3,8},
-  {font3x8_n,3,8},
-  {font3x8_o,3,8},
-  {font3x8_p,3,8},
-  {font3x8_q,3,8},
-  {font3x8_r,3,8},
-  {font3x8_s,3,8},
-  {font3x8_ct,3,8},
-  {font3x8_u,3,8},
-  {font3x8_v,3,8},
-  {font3x8_w,3,8},
-  {font3x8_x,3,8},
-  {font3x8_y,3,8},
-  {font3x8_z,3,8},
-  {font3x8_LEFTBIGCURV,3,8},
-  {font3x8_HTZLSPLASH,3,8},
-  {font3x8_RIGHTBIGCURV,3,8},
-  {font3x8_TO,3,8},
-  
-};
 
 void k_icon_show(uint8_t x,uint8_t y,uint8_t index,uint8_t bank,bool white){
   if(bank==0){
@@ -1273,5 +442,56 @@ void k_icon_show(uint8_t x,uint8_t y,uint8_t index,uint8_t bank,bool white){
     const Battery_t *batt=&battery[index];
     k_screen_bmp(x,y,batt->data,batt->width,batt->height,white);
   }
+  if(bank==3){
+    const fonts8x8_t *font8=&fonts8x8[index];
+    k_screen_bmp(x,y,font8->data,font8->width,font8->height,white);
+  }
 
+
+}
+
+uint8_t k_font_char(uint8_t x,uint8_t y,uint16_t index,char font[],bool white){
+  if(strcmp(font,"font3x8")==0){
+    const fonts3x8_t *font=&fonts3x8[index-32];
+    k_screen_bmp(x,y,font->data,font->width,font->height,white);
+    return font->width;
+  }
+  if(strcmp(font,"font8x8")==0){
+    const fonts8x8_t *font8=NULL;
+    for (int i = 0; i < font8x8_COUNT; i++) {
+      if (fonts8x8[i].index == index) {
+        font8=&fonts8x8[i];
+        break;
+      }
+    }
+    k_screen_bmp(x,y,font8->data,font8->width,font8->height,white);
+    return font8->width;
+  }
+}
+
+
+Utf8CharInfo k_font_unicode(const char *str){
+  Utf8CharInfo info = {0, 1};
+  if (!str || !*str) return info;
+  uint8_t c0 = (uint8_t)*str;
+  if (c0 < 0x80) {
+    info.code = c0;
+    info.len = 1;
+  }
+  else if ((c0 & 0xE0) == 0xC0) {
+    if (*(str + 1) == '\0') return info;
+    info.code = ((uint32_t)(c0 & 0x1F) << 6) | ((uint8_t)*(str + 1) & 0x3F);
+    info.len = 2;
+  }
+  else if ((c0 & 0xF0) == 0xE0) {
+    if (*(str + 1) == '\0' || *(str + 2) == '\0') return info; // 边界保护
+    info.code = ((uint32_t)(c0 & 0x0F) << 12) | 
+                ((uint32_t)((uint8_t)*(str + 1) & 0x3F) << 6) | 
+                ((uint8_t)*(str + 2) & 0x3F);
+    info.len = 3;
+  }
+  else {
+    info.len = 1;
+  }
+  return info;
 }

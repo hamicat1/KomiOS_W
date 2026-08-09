@@ -75,6 +75,9 @@ void k_app_textEdit(const char * path){
     char bufferA[8];
     sprintf(bufferA,"%d",totalLines);
     k_screen_word(bufferA,true,120,50,"font3x8",0);
+    char bufferB[8];
+    sprintf(bufferB,"%d",currentLineIndex);
+    k_screen_word(bufferB,true,120,40,"font3x8",0);
     k_screen_display();
     k_system();
     if(SEL_KEY==0){

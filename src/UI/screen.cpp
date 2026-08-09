@@ -1,6 +1,10 @@
 #include "screen.h"
 
+int K_SCREEN_WIDTH=128;
+int K_SCREEN_HEIGHT=64;
+
 void k_screen_init(){
+
   oled_init();
 }
 void k_screen_display(){
@@ -26,26 +30,30 @@ void k_screen_bmp(uint8_t x,uint8_t y,const unsigned char bitmap[],uint8_t w,uin
 }
 
 //font:font3x8,Defaut
-void k_screen_word(char *str,bool white,uint8_t posx,uint8_t posy,char font[],int charLim){
+
+void k_screen_word(char *str,bool white,uint8_t posx,uint8_t posy,char font[],int charLim){  
+  const char* textStr=k_word_base(str);
   
-  const char *wordstr=k_word_base(str,0);
-  uint16_t str_len=strlen(wordstr);
-  char k_word_temp;
-  uint8_t xskip;
-  uint8_t word_code=0;
-  if (strcmp(font,"font3x8")==0){
-    xskip=4;
-  }
+  
+  uint16_t str_len=strlen(textStr);
+  uint8_t xskip=4;
+  uint16_t word_code=0;
+  
+
   uint8_t maxCharsPerLine = (128 - posx) / xskip;
   if (charLim > 0 && charLim < maxCharsPerLine) {
     maxCharsPerLine = charLim;
   }
+
   uint8_t currentX = posx;
   uint8_t currentY = posy;
   uint8_t charsOnLine = 0;
+
   for(int i=0;i<str_len;i++){
-    k_word_temp=wordstr[i];
-    if (k_word_temp == '\n') {
+    Utf8CharInfo info=k_font_unicode(&textStr[i]);
+    if (info.len == 0) break;
+
+    if (info.code == 0x000A) {
       currentX = posx;
       currentY += 8; // 字体高度
       charsOnLine = 0;
@@ -57,10 +65,10 @@ void k_screen_word(char *str,bool white,uint8_t posx,uint8_t posy,char font[],in
       charsOnLine = 0;     
       if (currentY > 64) break; 
     }
-    word_code=k_word_temp-32;
-    k_icon_show(currentX,currentY,word_code,1,white);
+    xskip=(k_font_char(currentX,currentY,info.code,font,white))+1;
     currentX += xskip;
     charsOnLine++;
+    i+=(info.len)-1;
   }
 }
 

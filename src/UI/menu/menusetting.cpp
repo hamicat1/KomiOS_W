@@ -1,20 +1,5 @@
 #include "menusetting.h"
-char* menu_items[] = {
-    "SCREEN",
-    "SPEAKER",
-    "TIME/DATE",
-    "SYSTEM INFO",
-    "REBOOT"
-};
 
-const uint8_t menu_icons[] = {
-    4,
-    3,
-    5,
-    6,
-    7
-};
-const int item_count = 5;
 
 char* scr_menu_items[] = {
     "BRIGHT",
@@ -49,7 +34,7 @@ void k_setting_screen(){
     if(k_sel==1){
       if(SEL_KEY==0){
         k_key_notpress();
-        bright=k_desktop_numSel("BRIGHT",1,128,bright);
+        bright=k_desktop_numSel("BRIGHT",1,255,bright);
         k_desktop_noticeWindow("DONE","SET DONE",6,true);
         k_key_notpress();
       }
@@ -170,16 +155,18 @@ void k_setting_time(){
         k_desktop_timeSel();
         k_desktop_noticeWindow("DONE","SET DONE",6,true);
         k_key_notpress();
+        k_sel=1;
       }
     }
     if(k_sel==2){
       if(SEL_KEY==0){
-
+        k_sel=2;
       }
     }
     if(k_sel==3){
       if(SEL_KEY==0){
         k_screen_init();
+        k_sel=3;
       }
     }
 
@@ -193,50 +180,229 @@ void k_setting_time(){
   k_key_notpress();
 }
 
-void k_menu_setting(){
+char* lang_menu_items[] = {
+    "English",
+    "Dustch",
+    "Japanese_kana",
+};
+const uint8_t lang_menu_icons[] = {
+    1,
+    1,
+    1,
+};
+const int lang_item_count = 3;
+
+void k_setting_lang(){
   char buffer[32];
   k_sel=1;
   k_exit=true;
   k_key_notpress();
   while(k_exit){
     k_screen_clear();
-    k_desktop_window("SETTINGS");
+    k_desktop_window("LANGUAGE");
     k_menu_y=12;
-    for (int i = 0; i < item_count; i++) {
-      k_screen_word(menu_items[i],true,10,k_menu_y,"font3x8",0);
-      k_icon_show(0,k_menu_y,menu_icons[i],0,true);
+    for (int i = 0; i < lang_item_count; i++) {
+      k_screen_word(lang_menu_items[i],true,10,k_menu_y,"font3x8",0);
+      k_icon_show(0,k_menu_y,lang_menu_icons[i],0,true);
       k_menu_y+=10;
     }
     k_system();
-    k_desktop_menusel(item_count);
+    k_desktop_menusel(lang_item_count);
     k_screen_invertRect(0,k_sel*10+1,128,9);
     k_screen_display();
     if(k_sel==1){
       if(SEL_KEY==0){
-        k_setting_screen();
+
+        k_desktop_noticeWindow("DONE","SET DONE",6,true);
         k_key_notpress();
+        k_sel=1;
       }
     }
     if(k_sel==2){
       if(SEL_KEY==0){
-        k_setting_sound();
+
+        k_desktop_noticeWindow("DONE","SET DONE",6,true);
         k_key_notpress();
+        k_sel=2;
       }
     }
     if(k_sel==3){
       if(SEL_KEY==0){
-        k_setting_time();
+
+        k_desktop_noticeWindow("DONE","SET DONE",6,true);
         k_key_notpress();
+        k_sel=3;
       }
     }
-    if(k_sel==4){
+
+    k_screen_invertRect(0,k_sel*10+1,128,9);
+    k_exit=true;
+    if(BACK_KEY==0){
+      k_exit=false;
+    }
+
+  }
+  k_key_notpress();
+}
+
+void k_setting_device(){
+  char buffer[32];
+  k_sel=1;
+  k_exit=true;
+  k_key_notpress();
+  while(k_exit){
+    k_screen_clear();
+    k_desktop_window("DEVICE");
+    k_menu_y=12;
+
+    k_screen_word("SCREEN",true,10,k_menu_y,"font3x8",0);
+    k_icon_show(0,k_menu_y,1,0,true);
+    k_menu_y+=10;
+    
+    k_system();
+    k_desktop_menusel(2);
+    k_screen_invertRect(0,k_sel*10+1,128,9);
+    k_screen_display();
+    if(k_sel==1){
+      if(SEL_KEY==0){
+
+        k_sel=1;
+      }
+    }
+    if(k_sel==2){
+      if(SEL_KEY==0){
+
+        k_sel=2;
+      }
+    }
+    if(k_sel==3){
+      if(SEL_KEY==0){
+
+        k_sel=3;
+      }
+    }
+
+    k_screen_invertRect(0,k_sel*10+1,128,9);
+    k_exit=true;
+    if(BACK_KEY==0){
+      k_exit=false;
+    }
+
+  }
+  k_key_notpress();
+}
+
+
+void k_menu_setting(){
+  char buffer[32];
+  k_sel=1;
+  int menu_page=1;
+  k_exit=true;
+  k_key_notpress();
+  while(k_exit){
+    k_screen_clear();
+    k_desktop_window("Setting");
+    k_menu_y=12;
+
+    if (menu_page==1) {
+
+      k_screen_word("SCREEN",true,10,k_menu_y,"font3x8",0);
+      k_icon_show(0,k_menu_y,4,0,true);
+      k_menu_y+=10;
+      
+      k_screen_word("SPEAKER",true,10,k_menu_y,"font3x8",0);
+      k_icon_show(0,k_menu_y,3,0,true);
+      k_menu_y+=10;
+
+      k_screen_word("TIME/DATE",true,10,k_menu_y,"font3x8",0);
+      k_icon_show(0,k_menu_y,5,0,true);
+      k_menu_y+=10;
+
+      k_screen_word("LANGUAGE",true,10,k_menu_y,"font3x8",0);
+      k_icon_show(0,k_menu_y,32,0,true);
+      k_menu_y+=10;
+
+      k_screen_word("DEVICE",true,10,k_menu_y,"font3x8",0);
+      k_icon_show(0,k_menu_y,0,0,true);
+      k_menu_y+=10;
+
+    }else{
+      k_screen_word("SYSTEM INFO",true,10,k_menu_y,"font3x8",0);
+      k_icon_show(0,k_menu_y,6,0,true);
+      k_menu_y+=10;
+
+      k_screen_word("REBOOT",true,10,k_menu_y,"font3x8",0);
+      k_icon_show(0,k_menu_y,7,0,true);
+      k_menu_y+=10;
+
+    }
+    k_system();
+    if(UP_KEY==0){
+      k_sel-=1;
+      k_key_notpress();
+      if(k_sel<=0 && menu_page==2){
+        k_sel=5;
+        menu_page=1;
+      }
+    }
+    if(DOWN_KEY==0){
+      k_sel+=1;
+      k_key_notpress();
+      if(k_sel>5 && menu_page==1){
+        k_sel=1;
+        menu_page=2;
+      }
+    }
+    k_screen_invertRect(0,k_sel*10+1,128,9);
+    k_screen_display();
+    if(k_sel==1&&menu_page==1){
+      if(SEL_KEY==0){
+        k_setting_screen();
+        k_key_notpress();
+        k_sel=1;
+        menu_page=1;
+      }
+    }
+    if(k_sel==2&&menu_page==1){
+      if(SEL_KEY==0){
+        k_setting_sound();
+        k_key_notpress();
+        k_sel=2;
+        menu_page=1;
+      }
+    }
+    if(k_sel==3&&menu_page==1){
+      if(SEL_KEY==0){
+        k_setting_time();
+        k_key_notpress();
+        k_sel=3;
+        menu_page=1;
+      }
+    }
+    if(k_sel==4&&menu_page==1){
+      if(SEL_KEY==0){
+        k_setting_lang();
+        k_key_notpress();
+        k_sel=4;
+        menu_page=1;
+      }
+    }
+    if(k_sel==5&&menu_page==1){
+      if(SEL_KEY==0){
+        k_setting_device();
+        k_key_notpress();
+        k_sel=5;
+        menu_page=1;
+      }
+    }
+    if(k_sel==1&&menu_page==2){
       if(SEL_KEY==0){
         sprintf(buffer, "HEAP: %d KB", ESP.getFreeHeap() / 1024);
         k_desktop_notice(VERSION,buffer);
         k_key_notpress();
       }
     }
-    if(k_sel==5){
+    if(k_sel==2&&menu_page==2){
       if(SEL_KEY==0){
         ESP.restart();
       }

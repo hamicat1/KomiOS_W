@@ -97,7 +97,7 @@ void k_desktop_window(char* title){
   struct tm timeinfo = rtc.getTimeStruct();
   strftime(timeBuffer, sizeof(timeBuffer), "%H:%M", &timeinfo);
   k_screen_word(timeBuffer,true,0,0,"font3x8",0);
-  k_screen_word(title,true,26,0,"font3x8",0);
+  k_screen_word(title,true,26,0,FONT,0);
   k_desktop_icon(false,false,"",0);
   k_screen_line(0,10,128,10,true);
   k_screen_line(22,0,22,10,true);
@@ -107,9 +107,9 @@ void k_desktop_noticeWindow(char* title,char* index,uint8_t icon,bool while_e){
   k_screen_fillRect(64,0,64,64,false);
   k_screen_line(64,10,128,10,true);
   k_screen_line(64,0,64,64,true);
-  k_screen_word(title,true,65,0,"font3x8",0);
+  k_screen_word(title,true,65,0,FONT,0);
   k_icon_show(65,11,icon,0,true);
-  k_screen_word(index,true,65,20,"font3x8",13);
+  k_screen_word(index,true,65,20,FONT,11);
   k_icon_show(120,24,10,0,true);
   k_screen_blurRect(0,0,63,64);
   if (while_e){
@@ -130,6 +130,7 @@ void k_desktop_noticeWindow(char* title,char* index,uint8_t icon,bool while_e){
 
 void k_desktop_keyIcon(uint8_t icon,uint8_t icon2,uint8_t icon3){
   k_exit=true;
+  k_screen_line(K_SCREEN_WIDTH-10,12,118,64,true);
   k_icon_show(120,12,icon,0,true);
   k_icon_show(120,24,icon2,0,true);
   k_icon_show(120,56,icon3,0,true);
@@ -163,42 +164,53 @@ uint16_t k_desktop_numSel(char* title,uint16_t min_lim,uint16_t max_lim,uint16_t
   k_screen_clear();
   k_desktop_window(title);
   k_screen_fillRect(0, 60, 128, 64, true);
-  uint16_t sel_unit=128/(max_lim-min_lim);
-  uint16_t temp_sel=pre_val-min_lim;
+  const uint16_t BAR_PIXEL_TOTAL = 128;
+  uint16_t val_total_range = max_lim - min_lim;
+  uint16_t pixel_step_val;
+  if (val_total_range <= BAR_PIXEL_TOTAL) {
+    pixel_step_val = 1;
+  } else {
+    // 向上取整，避免最后一段数值超出进度条
+    pixel_step_val = (val_total_range + BAR_PIXEL_TOTAL - 1) / BAR_PIXEL_TOTAL;
+  }
+  uint16_t max_pixel_index = val_total_range / pixel_step_val;
+  uint16_t curr_pixel_idx = (pre_val - min_lim) / pixel_step_val;
+  if (curr_pixel_idx > max_pixel_index) curr_pixel_idx = max_pixel_index;
   char strtemp[8];
+  uint16_t current_val = pre_val;
   while(k_exit){
-    k_screen_fillRect(0, 61, 128, 63, false);
-    k_screen_fillRect(0,61,temp_sel*sel_unit,63,true);
-    sprintf(strtemp,"%d",(temp_sel+min_lim));
+    curr_pixel_idx =(current_val-min_lim)/pixel_step_val;
+    k_screen_fillRect(0, 61, 128, 2, false);
+    k_screen_fillRect(0,61,curr_pixel_idx,63,true);
+    sprintf(strtemp,"%d",(current_val));
     k_screen_fillRect(0, 12, 12, 20, false);
     k_screen_word(strtemp,true,0,12,"font3x8",0);
-    sprintf(strtemp,"%d",(sel_unit));
-    k_screen_word(strtemp,true,0,30,"font3x8",0);
     k_screen_display();
+
     if (strcmp(title,"BRIGHT")==0){
-      bright=(temp_sel+min_lim);
+      bright=current_val;
     }
     k_system();
     if(UP_KEY==0){
-      temp_sel+=1;
+      current_val+=1;
       k_beep_tone(600, 5);
     }
     if(DOWN_KEY==0){
-      temp_sel-=1;
+      current_val-=1;
       k_beep_tone(600, 5);
     }
-    if(temp_sel<=1){
-      temp_sel=1;
+    if(current_val<=min_lim){
+      current_val=min_lim;
     }
-    if(temp_sel>(max_lim-min_lim)){
-      temp_sel=(max_lim-min_lim);
+    if(current_val>(max_lim)){
+      current_val=(max_lim);
     }
     if(BACK_KEY==0||SEL_KEY==0){
       k_exit=false;
     }
   }
   k_key_notpress();
-  return temp_sel+min_lim;
+  return current_val;
 }
 
 
@@ -206,14 +218,32 @@ uint16_t k_desktop_charEdit(char* title,uint16_t max_lim,char* pre_val,bool file
   uint8_t cursor=0;
   int keyCursor=1;
   int len=strlen(pre_val)+1;
-  char charSet[]="1234567890QWERTYUIOPASDFGHJKLZXCVBNM/_-,. ";
-  if (file){
-    strcpy(charSet, "QWERTYUIOPASDFGHJKLZXCVBNM/_,. ");
-  }
-  int charSetLen=sizeof(charSet)-1;
+  char charSet[80];
+  int charSetLen;
+  bool upper=true;
+  bool smbl=false;
+
+
   k_exit=true;
   k_key_notpress();
   while(k_exit){
+    if(file){
+      strcpy(charSet, "QWERTYUIOP_ ASDFGHJKLZ/ XCVBNM,.  ");
+      charSetLen=36;
+    }else{
+      if (smbl){
+        strcpy(charSet, "!@#$%^&*()_-+=`~[]{}\\|;:'\"<>?/    ");
+        charSetLen=36;
+      }else{
+        if(upper){
+          strcpy(charSet, "1234567890_-QWERTYUIOP()ASDFGHJKLZ;\"XCVBNM,.?   ");
+        }else{
+          strcpy(charSet, "1234567890_-qwertyuiop()asdfghjklz;\"xcvbnm,.?   ");
+        }
+        charSetLen=48;
+      }
+    }
+    
     len=strlen(pre_val)+1;
     k_screen_clear();
     k_desktop_window(title);
@@ -238,30 +268,38 @@ uint16_t k_desktop_charEdit(char* title,uint16_t max_lim,char* pre_val,bool file
       }
     }
     int charBuf=0;
-    int charSetDisp=charSetLen/10+2;
+    int charSetDisp=charSetLen/12+2;
     for(int j=2;j<charSetDisp;j++){
-      for(int i=0;i<10;i++){
+      for(int i=0;i<12;i++){
         char singleCharStr[2];
         singleCharStr[0] = charSet[charBuf]; // 获取特定字符
         singleCharStr[1] = '\0'; 
-        k_screen_word(singleCharStr,false,i*6+1,j*10,"font3x8",0);
+        k_screen_word(singleCharStr,false,i*6+1,j*10+1,"font3x8",0);
         if (charBuf==keyCursor-1){
-          k_screen_invertRect(i*6,j*10-1,5,10);
+          k_screen_invertRect(i*6,j*10,5,10);
         }
         charBuf++;
       }
     }
-    k_screen_word("<-",false,110,30,"font3x8",0);
-    k_screen_word("->",false,110,40,"font3x8",0);
-    k_screen_word("DONE",false,110,50,"font3x8",0);
+    k_icon_show(100,21,21,0,false);
+    k_icon_show(110,21,22,0,false);
+    k_screen_word("<-",false,110,31,"font3x8",0);
+    k_screen_word("->",false,110,41,"font3x8",0);
+    k_screen_word("DONE",false,110,51,"font3x8",0);
     if (keyCursor==charSetLen+1){
-      k_screen_invertRect(109,29,9,10);
+      k_screen_invertRect(99,20,9,10);
     }
     if (keyCursor==charSetLen+2){
-      k_screen_invertRect(109,39,9,10);
+      k_screen_invertRect(109,20,9,10);
     }
     if (keyCursor==charSetLen+3){
-      k_screen_invertRect(109,49,18,10);
+      k_screen_invertRect(109,30,9,10);
+    }
+    if (keyCursor==charSetLen+4){
+      k_screen_invertRect(109,40,9,10);
+    }
+    if (keyCursor==charSetLen+5){
+      k_screen_invertRect(109,50,18,10);
     }
     k_screen_display();
     k_system();
@@ -277,8 +315,8 @@ uint16_t k_desktop_charEdit(char* title,uint16_t max_lim,char* pre_val,bool file
     if(DOWN_KEY==0){
       keyCursor+=1;
       k_beep_tone(600, 5);
-      if(keyCursor>charSetLen+3){
-        keyCursor=charSetLen+3;
+      if(keyCursor>charSetLen+5){
+        keyCursor=charSetLen+5;
       }
       k_key_notpress();
     }
@@ -289,16 +327,34 @@ uint16_t k_desktop_charEdit(char* title,uint16_t max_lim,char* pre_val,bool file
     }
     if(SEL_KEY==0){
       if (keyCursor==charSetLen+1){
-        cursor-=1;
+        if(upper){
+          upper=false;
+        }else{
+          upper=true;
+        }
         k_key_notpress();
         continue;
       }
       if (keyCursor==charSetLen+2){
-        cursor+=1;
+        if(smbl){
+          smbl=false;
+        }else{
+          smbl=true;
+        }
         k_key_notpress();
         continue;
       }
       if (keyCursor==charSetLen+3){
+        cursor-=1;
+        k_key_notpress();
+        continue;
+      }
+      if (keyCursor==charSetLen+4){
+        cursor+=1;
+        k_key_notpress();
+        continue;
+      }
+      if (keyCursor==charSetLen+5){
         k_key_notpress();
         continue;
       }
@@ -360,6 +416,7 @@ void k_desktop_timeSel(){
     if (temp_sel==4){
       k_screen_invertRect(28,24,9,10);
     }
+    k_desktop_keyIcon(23,12,24);
     k_screen_display();
     k_system();
     if(UP_KEY==0){
@@ -503,35 +560,47 @@ void k_desktop_menu(){
     sprintf(buffer,"%d",k_sel);
     k_screen_word(buffer,true,124,10,"font3x8",0);
     k_system();
-    k_desktop_menusel(4);
+    k_desktop_menusel(5);
     k_screen_fillRect(0, 10, 40, 64, true);
 
     if(k_sel==1){
-      k_screen_text("Clock",true,42,10,"font3x8",1);
+      k_screen_word("CLOCK",true,42,10,FONT,0);
       k_icon_show(42,20,8,0,true);
       if(SEL_KEY==0){
-        //k_menu_clock();
+        k_menu_clock();
+        k_sel=1;
       }
     }
     if(k_sel==2){
-      k_screen_text("File",true,42,10,"font3x8",1);
+      k_screen_word("FILE",true,42,10,FONT,0);
       k_icon_show(42,20,0,0,true);
       if(SEL_KEY==0){
         k_menu_file();
+        k_sel=2;
       }
     }
     if(k_sel==3){
-      k_screen_text("Settings",true,42,10,"font3x8",1);
+      k_screen_word("SETTING",true,42,10,FONT,0);
       k_icon_show(42,20,2,0,true);
       if(SEL_KEY==0){
         k_menu_setting();
+        k_sel=3;
       }
     }
     if(k_sel==4){
-      k_screen_text("Tone",true,42,10,"font3x8",1);
+      k_screen_word("BEEP",true,42,10,FONT,0);
       k_icon_show(42,20,3,0,true);
       if(SEL_KEY==0){
         k_menu_beep();
+        k_sel=4;
+      }
+    }
+    if(k_sel==5){
+      k_screen_word("Wire",true,42,10,FONT,0);
+      k_icon_show(42,20,31,0,true);
+      if(SEL_KEY==0){
+        k_menu_wire();
+        k_sel=5;
       }
     }
     k_menuthing_calendar();

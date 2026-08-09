@@ -77,7 +77,7 @@ int k_menu_fileNew(char* currentFol){
       k_icon_show(0,12,18,0,true);
       k_screen_word("Music(.mus)",true,10,22,"font3x8",0);
       k_icon_show(0,22,18,0,true);
-      k_screen_word("NewFolder",true,10,32,"font3x8",0);
+      k_screen_word("NewFolder",true,10,32,FONT,0);
       k_icon_show(0,32,0,0,true);
       k_screen_word(" ",true,10,42,"font3x8",0);
       k_icon_show(0,42,18,0,true);
@@ -143,24 +143,24 @@ int k_menu_fileMenu(bool drive){
     k_system();
     if (!drive){
       if (k_page==1){
-        k_screen_word("OPEN",true,10,12,"font3x8",0);
+        k_screen_word("OPEN",true,10,12,FONT,0);
         k_icon_show(0,12,14,0,true);
-        k_screen_word("Copy",true,10,22,"font3x8",0);
+        k_screen_word("COPY",true,10,22,FONT,0);
         k_icon_show(0,22,15,0,true);
-        k_screen_word("Rename",true,10,32,"font3x8",0);
+        k_screen_word("RENAME",true,10,32,FONT,0);
         k_icon_show(0,32,16,0,true);
-        k_screen_word("Delete",true,10,42,"font3x8",0);
+        k_screen_word("DELETE",true,10,42,FONT,0);
         k_icon_show(0,42,17,0,true);
-        k_screen_word("New",true,10,52,"font3x8",0);
+        k_screen_word("NEW",true,10,52,FONT,0);
         k_icon_show(0,52,20,0,true);
       }else{
-        k_screen_word("Info",true,10,12,"font3x8",0);
+        k_screen_word("INFO",true,10,12,FONT,0);
         k_icon_show(0,12,6,0,true);
       }
     }else{
-      k_screen_word("OPEN",true,10,12,"font3x8",0);
+      k_screen_word("OPEN",true,10,12,FONT,0);
       k_icon_show(0,12,14,0,true);
-      k_screen_word("FORMAT",true,10,22,"font3x8",0);
+      k_screen_word("FORMAT",true,10,22,FONT,0);
       k_icon_show(0,22,14,0,true);
     }
     if (drive){
@@ -241,16 +241,17 @@ char* open_items[] = {
     "AUTO SELECT",
     "Text editor",
     "Music player",
-
+    "Language",
 };
 
 const uint8_t open_icons[] = {
+    1,
     13,
     13,
-    13
+    32,
 
 };
-const int open_count = 3;
+const int open_count = 4;
 
 int k_menu_fileOpen(){
   k_sel=1;
@@ -261,7 +262,7 @@ int k_menu_fileOpen(){
     k_desktop_window("OPEN PATH");
     k_menu_y=12;
     for (int i = 0; i < open_count; i++) {
-      k_screen_word(open_items[i],true,10,k_menu_y,"font3x8",0);
+      k_screen_word(open_items[i],true,10,k_menu_y,FONT,0);
       k_icon_show(0,k_menu_y,open_icons[i],0,true);
       k_menu_y+=10;
     }
@@ -312,22 +313,23 @@ void k_menu_fileFlash(char* currentFol){
   while(k_exit){
     k_screen_clear();
     k_desktop_window("FILE");
-    k_screen_word(currentFolder,true,0,56,"font3x8",0);
+    k_screen_word(currentFolder,true,0,56,FONT,0);
+
     sprintf(pageStr, "%d", currentPage);
-    k_screen_word(pageStr,true,110,56,"font3x8",0);
+    k_screen_word(pageStr,true,120,56,FONT,0);
     sprintf(pageStr, "%d", k_fsel);
-    k_screen_word(pageStr,true,110,46,"font3x8",0);
+    k_screen_word(pageStr,true,120,46,FONT,0);
     k_menu_y=12;
     
     for(int i=0;i<filecount;i++){
-      k_screen_word(pageBuffer[i],true,10,k_menu_y,"font3x8",0);
+      k_screen_word(pageBuffer[i],true,10,k_menu_y,FONT,0);
       if (isDirBuffer[i]){
         k_icon_show(0,k_menu_y,0,0,true);
       }else{
         k_icon_show(0,k_menu_y,18,0,true);
         snprintf(oldFullPath, sizeof(oldFullPath), "%s/%s", currentFol, pageBuffer[i]);
-        fileInfo(FFat,oldFullPath,fileSize);
-        k_screen_word(fileSize,true,64,k_menu_y,"font3x8",0);
+        fileInfo(FFat,oldFullPath,fileSize,sizeof(fileSize));
+        k_screen_word(fileSize,true,100,k_menu_y,FONT,0);
       }
       k_menu_y+=10;
       
@@ -386,26 +388,29 @@ void k_menu_fileFlash(char* currentFol){
             if(k_ret==1){
               k_app_textEdit(oldFullPath);
             }
-            if(k_ret==2){
+            else if(k_ret==2){
               k_app_musicPlayer(oldFullPath);
+            }
+            else if(k_ret==3){
+              k_word_loadLanguage(oldFullPath);
+            }
+            else{
+              if (strcasecmp(ext, "txt") == 0) {
+                Serial.println("Text File");
+                k_app_textEdit(oldFullPath);
+              } else if (strcasecmp(ext, "mus") == 0) {
+                Serial.println("Audio File");
+                k_app_musicPlayer(oldFullPath);
+              }else if (strcasecmp(ext, "lng") == 0) {
+                Serial.println("Language File");
+                k_word_loadLanguage(oldFullPath);
+              }
+              else {
+                Serial.println("Unknown Format");
+              }
             }
 
-            if (strcasecmp(ext, "txt") == 0) {
-              Serial.println("Text File");
-              k_app_textEdit(oldFullPath);
-            } else if (strcasecmp(ext, "mus") == 0) {
-              Serial.println("Audio File");
-              k_app_musicPlayer(oldFullPath);
-            }
-            else {
-              Serial.println("Unknown Format");
-              if(k_ret==1){
-                k_app_textEdit(oldFullPath);
-              }
-              if(k_ret==2){
-                k_app_musicPlayer(oldFullPath);
-              }
-            }
+            
           
           } else {
             Serial.println("No Extension");
@@ -428,8 +433,10 @@ void k_menu_fileFlash(char* currentFol){
       }
       if (sel==6){
         char fileInfoStr[128];
-        fileInfo(FFat,oldFullPath,fileSize);
+        fileInfo(FFat,oldFullPath,fileSize,sizeof(fileSize));
+
         snprintf(fileInfoStr,sizeof(fileInfoStr),"%s\n%s",oldFullPath,fileSize);
+        
         k_desktop_noticeWindow("INFO",fileInfoStr,6,true);
       }
       filecount=showFilePage(FFat,currentFolder,currentPage);
@@ -457,7 +464,7 @@ void k_menu_file(){
     k_desktop_window("FILE");
     k_menu_y=12;
     for (int i = 0; i < driver_count; i++) {
-      k_screen_word(driver_items[i],true,10,k_menu_y,"font3x8",0);
+      k_screen_word(driver_items[i],true,10,k_menu_y,FONT,0);
       k_icon_show(0,k_menu_y,driver_icons[i],0,true);
       k_menu_y+=10;
     }
